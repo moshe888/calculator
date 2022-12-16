@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     int equal = 0;
     String type = null;
     String current_value = "";
+    String str_num = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,38 +23,65 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void funcButten_number(View view) {
+        current_value="";
         Button b = (Button) view;
-        String str = b.getText().toString();
-         if(num1 == 0){
+
+//        if (current_value.equals(str_num))
+//        current_value =str_num;
+         if((num1 == 0 || str_num != "") && num2 == 0){
             textView.setText(" ");
+             str_num += b.getText().toString();
+            textView.setText(str_num);
 
-            textView.append(str);
-
-            num1 = Integer.parseInt(str);
+            num1 = Integer.parseInt(str_num);
         }
         else {
-            textView.append(str);
-            num2 = Integer.parseInt(str);
+             str_num += b.getText().toString();
+
+            textView.append(b.getText().toString());
+            num2 = Integer.parseInt(str_num);
         }
     }
-public void funcButten_calculation(View view){
-    Button b = (Button) view;
-    String str = b.getText().toString();
-    textView.append(str);
-   if(str.equals("+") )
-        type = "plus";
-   if(str.equals("-"))
-       type = "minus";
+public void funcButten_calc(View view){
+    str_num = "";
+        try {
 
-    }
+            Button b = (Button) view;
+
+            String str = b.getText().toString();
+            Exception expation = new Exception();
+            if (current_value.equals(str))
+                throw(expation.getCause());
+            current_value = str;
+            textView.append(str);
+            if (str.equals("+"))
+                type = "plus";
+           else if (str.equals("-"))
+                type = "minus";
+           else if (str.equals("/"))
+                type = "divide";
+          else  if (str.equals("*"))
+                type = "double";
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+}
 
 
 
     public void equal(View view) {
-        if(type == "plus")
+        current_value="";
+        str_num = "";
+        if(type.equals("plus"))
         equal = num1 + num2;
-       else if(type == "minus")
+       else if(type.equals("minus"))
             equal = num1 - num2;
+       else if (type.equals("divide"))
+           equal = (num1/num2);
+       else if (type.equals("double"))
+            equal = (num1*num2);
         Button b = (Button) view;
         String str = b.getText().toString();
              textView.append(str + equal);
@@ -62,15 +90,11 @@ public void funcButten_calculation(View view){
 
     }
 
-    public void divide(View view) {
 
-    }
-
-    public void funcDouble(View view) {
-    }
 
     public void funcAc(View view) {
-        textView.setText(" ");
+        str_num = "";
+        textView.setText("0");
 
     }
 }
